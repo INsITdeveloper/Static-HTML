@@ -24,6 +24,21 @@ const apiEndpoints = [
     ],
   },
   {
+    category: 'AI',
+    endpoints: [
+      {
+        method: 'POST',
+        path: '/api/chatgpt',
+        description: 'Generate response using ChatGPT.\nExample request body:\n{ "prompt": "Hello, GPT!" }',
+      },
+      {
+        method: 'GET',
+        path: '/api/bing',
+        description: 'Search using Bing.\nExample response:\n{ "results": ["https://example.com/result1", "https://example.com/result2"] }',
+      },
+    ],
+  },
+  {
     category: 'Uploader',
     endpoints: [
       {

@@ -1,5 +1,5 @@
-"use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
@@ -15,6 +15,11 @@ const apiEndpoints = [
         method: 'GET',
         path: '/api/maid',
         description: 'Example response:\n{ "url": "https://cdn.waifu.im/7347.jpg" }',
+      },
+      {
+        method: 'GET',
+        path: '/api/oppai',
+        description: 'Example response:\n{ "oppaiSize": "XL", "anime": "Big Oppai" }',
       },
     ],
   },

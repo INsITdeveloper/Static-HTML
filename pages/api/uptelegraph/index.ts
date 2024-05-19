@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const fileBuffer = req.body; // Mengambil data file dari body request
+    const fileBuffer = req.body; // Assuming file data is in buffer format
     const telegraphResponse = await uploadToTelegraph(fileBuffer);
 
     res.status(200).json({ url: telegraphResponse.result.url });
@@ -15,7 +15,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function uploadToTelegraph(fileBuffer: Buffer) {
   const formData = new FormData();
-  formData.append('file', fileBuffer, { filename: 'uploaded_file' });
+  
+  // Convert Buffer to Blob
+  const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+
+  // Append Blob to FormData
+  formData.append('file', blob, 'uploaded_file');
 
   const response = await axios.post('https://telegra.ph/upload', formData, {
     headers: {

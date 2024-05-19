@@ -39,21 +39,6 @@ const apiEndpoints = [
       },
     ],
   },
-  {
-    category: 'Uploader',
-    endpoints: [
-      {
-        method: 'POST',
-        path: '/api/upload/image',
-        description: 'Uploads an image.\nExample response:\n{ "url": "https://example.com/image.jpg" }',
-      },
-      {
-        method: 'POST',
-        path: '/api/upload/video',
-        description: 'Uploads a video.\nExample response:\n{ "url": "https://example.com/video.mp4" }',
-      },
-    ],
-  },
 ];
 
 const Page = () => {

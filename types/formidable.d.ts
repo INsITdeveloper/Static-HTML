@@ -1,6 +1,5 @@
 declare module 'formidable' {
   import { IncomingMessage } from 'http';
-  import { Stream } from 'stream';
 
   interface File {
     filepath: string;
@@ -24,7 +23,10 @@ declare module 'formidable' {
 
   class IncomingForm {
     constructor(options?: Options);
-    parse(req: IncomingMessage, callback: (err: any, fields: Fields, files: Files) => void): void;
+    parse(
+      req: IncomingMessage,
+      callback: (err: any, fields: Fields, files: Files) => void
+    ): void;
   }
 
   export = IncomingForm;

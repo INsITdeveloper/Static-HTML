@@ -1,32 +1,52 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { useState } from 'react';
 import axios from 'axios';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const fileBuffer = req.body; // Assuming file data is in buffer format
-    const telegraphResponse = await uploadToTelegraph(fileBuffer);
+const UploadForm: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [jsonOutput, setJsonOutput] = useState<string>('');
 
-    res.status(200).json({ url: telegraphResponse.result.url });
-  } catch (error) {
-    console.error('Error uploading to Telegraph:', error);
-    res.status(500).json({ error: 'Error uploading to Telegraph' });
-  }
-}
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageUrl(e.target?.result as string);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
 
-async function uploadToTelegraph(fileBuffer: Buffer) {
-  const formData = new FormData();
-  
-  // Convert Buffer to Blob
-  const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+  const handleUpload = async () => {
+    if (!file) return;
 
-  // Append Blob to FormData
-  formData.append('file', blob, 'uploaded_file');
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await axios.post('/api/uptelegraph/index', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const data = response.data;
+      setJsonOutput(JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      setJsonOutput('Error uploading file');
+    }
+  };
 
-  const response = await axios.post('https://telegra.ph/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return (
+    <div>
+      <h1>Upload to Telegraph</h1>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload} disabled={!file}>Upload</button>
 
-  return response.data;
-}
+      {imageUrl && <img src={imageUrl} alt="Uploaded" style={{ maxWidth: '300px', maxHeight: '300px' }} />}
+
+      <pre>{jsonOutput}</pre>
+    </div>
+  );
+};
+
+export default UploadForm;

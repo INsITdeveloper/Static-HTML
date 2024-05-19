@@ -65,7 +65,7 @@ const Page = () => {
     <>
       <Analytics />
       <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <h2>Docs ID ( Indonesia )</h2>
+        <h2>Docs ID NSTAPI</h2>
         <section>
           <p>Haloo Semua! Saya Memperkenalkan API Free Dari NeastooID,
             Project Ini Sebenarnya Sudah Tertinggal Sejak 2022 Dan Baru Di Lanjut Skrg,

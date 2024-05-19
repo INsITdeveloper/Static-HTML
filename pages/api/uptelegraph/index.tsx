@@ -14,16 +14,35 @@ const Index = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('/api/uptelegraph/index.tsx', formData);
-            const data = response.data;
+            // Kirim media ke telegra.ph
+            const telegraphResponse = await axios.post('https://telegra.ph/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            // Dapatkan URL gambar dan ukuran media dari respons telegra.ph
+            const imageUrl = telegraphResponse.data[0].src;
+            const imageSize = telegraphResponse.data[0].size;
+
+            // Hitung waktu expired (misalnya, 1 minggu dari sekarang)
+            const expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 7); // Expired dalam 7 hari
+
+            // Persiapkan respons JSON
+            const responseData = {
+                imageUrl: imageUrl,
+                imageSize: imageSize,
+                expireDate: expireDate.toISOString() // Konversi tanggal ke format ISO
+            };
 
             // Set preview image
-            setPreviewImage(data.imageUrl);
+            setPreviewImage(imageUrl);
 
             // Set output JSON
-            setOutputJson(JSON.stringify(data, null, 2));
+            setOutputJson(JSON.stringify(responseData, null, 2));
         } catch (error) {
-            console.error('Error uploading image:', error);
+            console.error('Error uploading image to telegra.ph:', error);
             setOutputJson('Error: ' + error.message);
         }
     };

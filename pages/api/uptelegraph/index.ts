@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import fs from 'fs';
 import { uploadFile } from 'telegraph-uploader';
 
 export const config = {
@@ -8,9 +9,9 @@ export const config = {
   },
 };
 
-const uploadToTelegraph = async (filePath: string) => {
+const uploadToTelegraph = async (fileStream: NodeJS.ReadableStream, fileName: string) => {
   try {
-    const response = await uploadFile(filePath);
+    const response = await uploadFile(fileStream, fileName);
     return response;
   } catch (error) {
     console.error('Error uploading to Telegraph:', error);
@@ -36,7 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      const telegraphResponse = await uploadToTelegraph(file.path);
+      const fileStream = fs.createReadStream(file.path);
+      const telegraphResponse = await uploadToTelegraph(fileStream, file.name);
       return res.status(200).json({ url: telegraphResponse.url });
     } catch (uploadError) {
       console.error('Error uploading to Telegraph:', uploadError);

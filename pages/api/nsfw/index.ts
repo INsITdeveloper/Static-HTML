@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const response = await fetch('https://api.waifu.im/search?included_tags=waifu');
+    const response = await fetch('https://api.waifu.im/search?included_tags=hentai');
     if (!response.ok) {
       throw new Error('Failed to fetch waifu data');
     }
@@ -80,14 +80,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         </style>
       </head>
       <body>
-        <h1>Waifu Generator V1</h1>
+        <h1>Nsfw Generator V1</h1>
         <div class="container">
           ${data.images.map((image: any) => {
             const artistName = image.artist?.name || 'Not Found';
             const artistPixiv = image.artist?.pixiv ? `<a href="${image.artist.pixiv}" target="_blank" rel="noopener noreferrer">${artistName}</a>` : artistName;
             return `
               <div class="image-container">
-                <img src="${image.url}" alt="Waifu Image" />
+                <img src="${image.url}" alt="Nsfw Image" />
                 <p>Artist: ${artistPixiv}</p>
               </div>
             `;

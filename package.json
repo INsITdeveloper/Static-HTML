@@ -19,7 +19,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/jarif-api": "^1.0.2",
+    "jarif-api": "^1.0.2",
     "node-fetch": "^3.3.2",
     "axios": "^1.6.0",
     "postcss": "^8",

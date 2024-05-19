@@ -1,61 +1,46 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import si from 'systeminformation'; // Modul untuk memperoleh informasi sistem
+import formidable from 'formidable';
+import { uploadFile } from 'telegraph-uploader';
 
-// Fungsi untuk mendapatkan informasi penggunaan CPU
-const getCpuUsage = async () => {
-  try {
-    const cpuData = await si.currentLoad();
-    return cpuData.currentLoad; // Properti yang benar adalah currentLoad
-  } catch (error) {
-    console.error('Error fetching CPU usage:', error);
-    return null;
-  }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
-// Fungsi untuk mendapatkan informasi penggunaan RAM
-const getRamUsage = async () => {
+const uploadToTelegraph = async (filePath: string) => {
   try {
-    const memData = await si.mem();
-    return (memData.used / memData.total) * 100;
+    const response = await uploadFile(filePath);
+    return response;
   } catch (error) {
-    console.error('Error fetching RAM usage:', error);
-    return null;
+    console.error('Error uploading to Telegraph:', error);
+    throw new Error('Telegraph upload failed');
   }
-};
-
-// Fungsi untuk mendapatkan waktu server dalam format 12 jam (AM/PM)
-const getServerTime = () => {
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 12 || 12; // Format 12 jam
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    // Mendapatkan informasi dari berbagai sumber
-    const [cpuUsage, ramUsage, serverTime] = await Promise.all([
-      getCpuUsage(),
-      getRamUsage(),
-      getServerTime(),
-    ]);
+  const form = new formidable.IncomingForm();
 
-    // Menyusun data respons
-    const responseData = {
-      serverTime,
-      ramUsage: `${ramUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
-      cpuUsage: `${cpuUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
-    };
+  form.uploadDir = './public/uploads';
+  form.keepExtensions = true;
 
-    // Mengirim respons dengan data yang dikumpulkan
-    res.status(200).json(responseData);
-  } catch (error) {
-    console.error('Error fetching server info:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error('Error parsing form:', err);
+      return res.status(500).json({ error: 'Error parsing form' });
+    }
+
+    const file = files.file as formidable.File;
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    try {
+      const telegraphResponse = await uploadToTelegraph(file.path);
+      return res.status(200).json({ url: telegraphResponse.url });
+    } catch (uploadError) {
+      console.error('Error uploading to Telegraph:', uploadError);
+      return res.status(500).json({ error: 'Error uploading to Telegraph' });
+    }
+  });
 }

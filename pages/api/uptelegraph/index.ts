@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { uploadFile } from 'telegraph-uploader';
-import formidable, { File } from 'formidable';
+import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 
@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: 'Error parsing the files' });
       }
 
-      const file = files.file as File;
+      const file = files.file as formidable.File;
       const filePath = file.filepath;
 
       try {

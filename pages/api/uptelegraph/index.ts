@@ -1,3 +1,4 @@
+// pages/api/uptelegraph.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { uploadFile } from 'telegraph-uploader';
 import formidable, { File } from 'formidable';

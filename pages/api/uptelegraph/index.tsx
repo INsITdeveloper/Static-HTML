@@ -9,6 +9,12 @@ const Index = () => {
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
+        // Cek apakah ada file yang dipilih
+        if (!e.target.files || e.target.files.length === 0) {
+            console.error('No file selected.');
+            return;
+        }
+
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('file', file);

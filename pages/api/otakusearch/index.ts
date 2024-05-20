@@ -1,3 +1,5 @@
+// pages/api/search.ts
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import cheerio from 'cheerio';
@@ -17,10 +19,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const searchResults: any[] = [];
 
-    $('.result-list .result-item').each((i, element) => {
+    $('li[style="list-style:none;"]').each((i, element) => {
       const title = $(element).find('h2 a').text().trim();
       const link = $(element).find('h2 a').attr('href');
       const imageUrl = $(element).find('img').attr('src');
+      const altText = $(element).find('img').attr('alt');
       const genres: string[] = [];
       const status = $(element).find('.set').eq(1).text().replace('Status : ', '').trim();
       const rating = $(element).find('.set').eq(2).text().replace('Rating : ', '').trim();
@@ -29,8 +32,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         genres.push($(el).text().trim());
       });
 
-      if (title && link) {
-        searchResults.push({ title, link, imageUrl, genres, status, rating });
+      if (title && link && imageUrl) {
+        searchResults.push({ title, link, imageUrl, altText, genres, status, rating });
       }
     });
 

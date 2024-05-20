@@ -29,12 +29,12 @@ const apiEndpoints = [
     endpoints: [
       {
         method: 'GET',
-        path: '/api/otakudown?=knkgdddn01nk-batch-sub-indo',
+        path: '/api/otakudown?=id',
         description: 'Example response:\n{ "link": "https://otakudesu.cloud/batch/knkgdddn01nk-batch-sub-indo/" }',
       },
       {
         method: 'GET',
-        path: '/api/otakusearch?q=naruto',
+        path: '/api/otakusearch?q=id',
         description: 'Example response:\n{ "searchResults": [ { "title": "Naruto", "link": "https://otakudesu.cloud/anime/naruto", "imageUrl": "https://otakudesu.cloud/wp-content/uploads/2024/04/Naruto.jpg", "altText": "Naruto Sub Indo", "genres": ["Action", "Adventure"], "status": "Completed", "rating": "8.5" } ] }',
       },
     ],

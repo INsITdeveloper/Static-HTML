@@ -45,6 +45,7 @@ const Page = () => {
   const [description, setDescription] = useState('');
   const [serverData, setServerData] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleNavigate = (endpoint) => {
     window.location.href = endpoint;
@@ -77,11 +78,25 @@ const Page = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+    
+    setIsDarkMode(darkModeMediaQuery.matches);
+    darkModeMediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      darkModeMediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
   return (
     <>
       <Analytics />
-      <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif' }}>
-        <aside style={{ width: '250px', padding: '20px', borderRight: '1px solid #ccc' }}>
+      <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif', backgroundColor: isDarkMode ? '#121212' : '#ffffff', color: isDarkMode ? '#ffffff' : '#000000' }}>
+        <aside style={{ width: '250px', padding: '20px', borderRight: `1px solid ${isDarkMode ? '#333' : '#ccc'}`, backgroundColor: isDarkMode ? '#1e1e1e' : '#f9f9f9' }}>
           <h2>Categories</h2>
           <ul style={{ listStyleType: 'none', padding: 0 }}>
             {apiEndpoints.map((category, index) => (
@@ -93,7 +108,8 @@ const Page = () => {
                     border: 'none', 
                     textAlign: 'left', 
                     cursor: 'pointer', 
-                    fontWeight: selectedCategory === index ? 'bold' : 'normal'
+                    fontWeight: selectedCategory === index ? 'bold' : 'normal',
+                    color: isDarkMode ? '#ffffff' : '#000000'
                   }}
                 >
                   {category.category}
@@ -106,8 +122,8 @@ const Page = () => {
                           onClick={() => handleNavigate(endpoint.path)}
                           style={{ 
                             background: 'none', 
-                            border: '1px solid blue', 
-                            color: 'blue', 
+                            border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
+                            color: isDarkMode ? '#90caf9' : 'blue', 
                             borderRadius: '4px', 
                             cursor: 'pointer', 
                             padding: '5px 10px' 
@@ -141,8 +157,8 @@ const Page = () => {
                   style={{ 
                     marginLeft: '10px', 
                     background: 'none', 
-                    border: '1px solid blue', 
-                    color: 'blue', 
+                    border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
+                    color: isDarkMode ? '#90caf9' : 'blue', 
                     borderRadius: '4px', 
                     cursor: 'pointer', 
                     padding: '5px 10px' 
@@ -151,7 +167,7 @@ const Page = () => {
                   Use
                 </button>
               </h3>
-              <div style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
+              <div style={{ backgroundColor: isDarkMode ? '#333' : '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
                 <pre>
                   <code>{endpoint.description}</code>
                 </pre>
@@ -183,7 +199,7 @@ const Page = () => {
               )}
             </div>
           </section>
-          <footer style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
+          <footer style={{ marginTop: '20px', borderTop: `1px solid ${isDarkMode ? '#444' : '#ccc'}`, paddingTop: '10px' }}>
             <p>&copy; {new Date().getFullYear()} Created by Yusupkakuu</p>
           </footer>
         </div>

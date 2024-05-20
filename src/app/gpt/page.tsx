@@ -39,7 +39,7 @@ const ChatPage: React.FC = () => {
       const codeContent = code.split('\n').slice(1).join('\n');
 
       return (
-        <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
+        <div style={{ position: 'relative', marginBottom: '1rem', width: '100%' }}>
           <SyntaxHighlighter language={language} style={syntaxTheme}>
             {codeContent}
           </SyntaxHighlighter>
@@ -50,29 +50,29 @@ const ChatPage: React.FC = () => {
       );
     }
 
-    return <div style={{ marginBottom: '20px' }}>{message.text}</div>;
+    return <div style={{ marginBottom: '1rem' }}>{message.text}</div>;
   };
 
   return (
-    <div style={{ padding: '20px', display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '50%', maxWidth: '600px' }}>
-        <h1>Chat with AI</h1>
-        <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+    <div style={styles.container}>
+      <div style={styles.chatBox}>
+        <h1 style={styles.header}>Chat with AI</h1>
+        <form onSubmit={handleSubmit} style={styles.form}>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
+            style={styles.input}
           />
-          <button type="submit" style={{ marginTop: '10px', padding: '10px', width: '100%' }} disabled={loading}>
+          <button type="submit" style={styles.button} disabled={loading}>
             {loading ? 'Sending...' : 'Send'}
           </button>
         </form>
         <div>
           {messages.map((message, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '20px' }}>
-              <div style={{ fontWeight: 'bold', marginRight: '10px' }}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
+            <div key={index} style={styles.messageContainer}>
+              <div style={styles.messageSender}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
               {renderMessage(message)}
             </div>
           ))}
@@ -80,6 +80,53 @@ const ChatPage: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: '1.25rem',
+    display: 'flex',
+    justifyContent: 'center',
+    boxSizing: 'border-box',
+  },
+  chatBox: {
+    width: '100%',
+    maxWidth: '37.5rem', // 600px
+    '@media (min-width: 640px)': {
+      width: '50%',
+    },
+    '@media (max-width: 639px)': {
+      width: '90%',
+    },
+  },
+  header: {
+    fontSize: '1.5rem',
+    marginBottom: '1.25rem',
+  },
+  form: {
+    marginBottom: '1.25rem',
+  },
+  input: {
+    width: '100%',
+    padding: '0.625rem',
+    boxSizing: 'border-box',
+    fontSize: '1rem',
+  },
+  button: {
+    marginTop: '0.625rem',
+    padding: '0.625rem',
+    width: '100%',
+    fontSize: '1rem',
+  },
+  messageContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: '1.25rem',
+  },
+  messageSender: {
+    fontWeight: 'bold',
+    marginRight: '0.625rem',
+  },
 };
 
 export default ChatPage;

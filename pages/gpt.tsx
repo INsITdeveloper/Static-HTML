@@ -3,30 +3,13 @@ import React, { useState } from 'react';
 interface MessageProps {
     sender: string;
     text: string;
-    code?: boolean;
 }
 
-const Message: React.FC<MessageProps> = ({ sender, text, code }) => {
-    const handleCopy = () => {
-        navigator.clipboard.writeText(text);
-        alert("Kode telah disalin!");
-    };
-
-    return (
-        <div className={`message ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
-            <div className={`message-text ${code ? 'code' : ''}`}>
-                {code ? (
-                    <>
-                        <pre>{text}</pre>
-                        <button className="copy-btn" onClick={handleCopy}>Copy</button>
-                    </>
-                ) : (
-                    text
-                )}
-            </div>
-        </div>
-    );
-};
+const Message: React.FC<MessageProps> = ({ sender, text }) => (
+    <div className={`message ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
+        <div className="message-text">{text}</div>
+    </div>
+);
 
 interface ChatInputProps {
     onSend: (message: string) => void;
@@ -35,10 +18,22 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     const [input, setInput] = useState('');
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (input.trim()) {
-            onSend(input.trim());
+            const message = input.trim();
+            onSend(message);
             setInput('');
+
+            try {
+                const response = await fetch(`https://sh.zanixon.xyz/api/gpt-4?q=${encodeURIComponent(message)}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                const data = await response.json();
+                onSend(data.gpt);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
     };
 
@@ -62,19 +57,13 @@ const Chat: React.FC = () => {
     const sendMessage = (message: string) => {
         const newMessages = [...messages, { sender: 'User', text: message }];
         setMessages(newMessages);
-
-        // Simulasi panggilan ke API
-        const response = message.includes('kode') 
-            ? "<span class='code'>function greet() {<br/>&nbsp;&nbsp;console.log('Hello, world!');<br/>}</span>"
-            : "Halo! LinucxAI di sini untuk membantu Anda. Ada yang bisa saya bantu hari ini?";
-        setMessages([...newMessages, { sender: 'ChatGPT', text: response, code: message.includes('kode') }]);
     };
 
     return (
         <div className="chat">
             <div className="chat-body">
                 {messages.map((msg, index) => (
-                    <Message key={index} sender={msg.sender} text={msg.text} code={msg.code} />
+                    <Message key={index} sender={msg.sender} text={msg.text} />
                 ))}
             </div>
             <ChatInput onSend={sendMessage} />
@@ -85,6 +74,7 @@ const Chat: React.FC = () => {
                     border: 1px solid #ccc;
                     border-radius: 5px;
                     font-family: 'Roboto', sans-serif;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Menambahkan shadow */
                 }
 
                 .chat-body {
@@ -98,6 +88,7 @@ const Chat: React.FC = () => {
                     padding: 10px;
                     border-radius: 5px;
                     max-width: 70%;
+                    word-wrap: break-word; /* Menambahkan pemisahan kata */
                 }
 
                 .message.bot {
@@ -112,31 +103,6 @@ const Chat: React.FC = () => {
 
                 .message-text {
                     word-wrap: break-word;
-                    white-space: pre-wrap;
-                    position: relative;
-                }
-
-                .message-text.code {
-                    background-color: #f5f5f5;
-                    padding: 10px;
-                    border-radius: 5px;
-                }
-
-                .message-text pre {
-                    margin: 0;
-                    overflow-x: auto;
-                }
-
-                .copy-btn {
-                    position: absolute;
-                    top: 5px;
-                    right: 5px;
-                    padding: 3px 6px;
-                    border: none;
-                    background-color: #4285f4;
-                    color: white;
-                    border-radius: 3px;
-                    cursor: pointer;
                 }
 
                 .chat-input {
@@ -155,6 +121,7 @@ const Chat: React.FC = () => {
                     border-radius: 5px;
                     margin-right: 10px;
                     font-size: 0.9rem;
+                    background-color: #f8f9fa; /* Warna latar belakang */
                 }
 
                 .chat-input button {

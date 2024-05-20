@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -17,16 +16,27 @@ const ChatPage: React.FC = () => {
 
     setLoading(true);
     setMessages([...messages, { text: input, from: 'user' }]);
-
+    setInput('');
+    
     try {
       const response = await axios.get(`https://sh.zanixon.xyz/api/gpt-4?q=${encodeURIComponent(input)}`);
       const aiResponse = response.data.gpt;
-      setMessages([...messages, { text: input, from: 'user' }, { text: aiResponse, from: 'ai' }]);
+      setMessages([...messages, { text: aiResponse, from: 'ai' }]);
     } catch (error) {
       console.error('Error fetching AI response:', error);
     } finally {
       setLoading(false);
-      setInput('');
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(event as React.FormEvent);
     }
   };
 
@@ -58,10 +68,10 @@ const ChatPage: React.FC = () => {
       <div style={styles.chatBox}>
         <h1 style={styles.header}>Chat with AI</h1>
         <form onSubmit={handleSubmit} style={styles.form}>
-          <input
-            type="text"
+          <textarea
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             style={styles.input}
           />
@@ -93,7 +103,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   chatBox: {
     width: '100%',
-    maxWidth: '37.5rem', // 600px
+    maxWidth: '160px', // Adjust the maximum width here
   },
   header: {
     fontSize: '1.5rem',
@@ -107,6 +117,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '0.625rem',
     boxSizing: 'border-box',
     fontSize: '1rem',
+    resize: 'none', // Disable textarea resizing
+    minHeight: '3rem', // Set a minimum height to textarea
   },
   button: {
     marginTop: '0.625rem',

@@ -1,6 +1,5 @@
-// src/app/gpt/page.tsx
+"use client";
 import { useState } from 'react';
-import axios from 'axios';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
@@ -14,8 +13,12 @@ const ChatPage = () => {
     setInput('');
 
     try {
-      const response = await axios.get(`/api/gpt-4?q=${encodeURIComponent(input)}`);
-      const aiMessage = response.data.message;
+      const response = await fetch(`/api/gpt-4?q=${encodeURIComponent(input)}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      const aiMessage = data.gpt;
       setMessages([...newMessages, { user: 'AI', text: aiMessage }]);
     } catch (error) {
       console.error('Error sending message:', error);

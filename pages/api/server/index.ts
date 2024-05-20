@@ -23,17 +23,16 @@ const getRamUsage = async () => {
   }
 };
 
-// Fungsi untuk mendapatkan waktu server dalam format 12 jam (AM/PM)
+// Fungsi untuk mendapatkan waktu server dalam format 12 jam (AM/PM) dengan zona waktu Asia/Jakarta
 const getServerTime = () => {
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 12 || 12; // Format 12 jam
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+  const now = new Date().toLocaleString('en-US', {
+    timeZone: 'Asia/Jakarta',
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  return now;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

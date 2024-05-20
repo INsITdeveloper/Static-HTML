@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -69,8 +70,8 @@ const ChatPage: React.FC = () => {
       </form>
       <div>
         {messages.map((message, index) => (
-          <div key={index} style={{ marginBottom: '20px' }}>
-            <div style={{ fontWeight: 'bold' }}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
+          <div key={index} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <div style={{ fontWeight: 'bold', marginRight: '10px' }}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
             {renderMessage(message)}
           </div>
         ))}

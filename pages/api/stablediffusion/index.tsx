@@ -3,8 +3,8 @@ import { stablediffusion } from 'gpti';
 import { useEffect, useState } from 'react';
 
 const StablediffusionPage = () => {
-    const [responseData, setResponseData] = useState(null);
-    const [error, setError] = useState(null);
+    const [responseData, setResponseData] = useState<any>(null); // Update type here
+    const [error, setError] = useState<Error | null>(null); // Update type here
 
     useEffect(() => {
         const fetchImage = async () => {

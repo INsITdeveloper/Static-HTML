@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
   {
-    category: 'Anime Foto',
+    category: 'RandAnine',
     endpoints: [
       {
         method: 'GET',
@@ -21,6 +21,21 @@ const apiEndpoints = [
         method: 'GET',
         path: '/api/oppai',
         description: 'Example response:\n{ "oppaiSize": "XL", "anime": "Big Oppai" }',
+      },
+    ],
+  },
+  {
+    category: 'AninDown',
+    endpoints: [
+      {
+        method: 'GET',
+        path: '/api/otakudown?=knkgdddn01nk-batch-sub-indo',
+        description: 'Example response:\n{ "link": "https://otakudesu.cloud/batch/knkgdddn01nk-batch-sub-indo/" }',
+      },
+      {
+        method: 'GET',
+        path: '/api/otakusearch?q=naruto',
+        description: 'Example response:\n{ "searchResults": [ { "title": "Naruto", "link": "https://otakudesu.cloud/anime/naruto", "imageUrl": "https://otakudesu.cloud/wp-content/uploads/2024/04/Naruto.jpg", "altText": "Naruto Sub Indo", "genres": ["Action", "Adventure"], "status": "Completed", "rating": "8.5" } ] }',
       },
     ],
   },

@@ -119,6 +119,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '1rem',
     resize: 'none', // Disable textarea resizing
     minHeight: '3rem', // Set a minimum height to textarea
+    wordWrap: 'break-word', // Untuk memastikan teks input dapat memanjang dan dibungkus
   },
   button: {
     marginTop: '0.625rem',
@@ -130,6 +131,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'flex-start',
     marginBottom: '1.25rem',
+    wordWrap: 'break-word', // Memastikan teks jawaban AI dapat memanjang dan dibungkus
   },
   messageSender: {
     fontWeight: 'bold',

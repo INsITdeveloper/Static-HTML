@@ -23,6 +23,8 @@ const apiEndpoints = [
     category: 'NSFW',
     endpoints: [
       { method: 'GET', path: '/api/hentai' },
+      { method: 'GET', path: '/api/echi' },
+      { method: 'GET', path: '/api/milf' },
     ],
   },
 ];

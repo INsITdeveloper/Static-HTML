@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const { stablediffusion } = require("gpti");
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-    const prompt = req.query.q as string || " ";
+    const prompt = req.query.q as string || "buatkan saya gambar anime";
 
     stablediffusion.v2({
         prompt: prompt,

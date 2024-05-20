@@ -22,6 +22,15 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/otakusearch?q=id' },
     ],
   },
+    {
+    category: 'AI',
+    endpoints: [
+      { method: 'GET', path: '/api/gpt-4?q=' },
+      { method: 'GET', path: '/api/gpt-3?q=' },
+      { method: 'GET', path: '/api/bing?q=' },
+      { method: 'GET', path: '/api/dall-e?q=' },
+    ],
+  },
   {
     category: 'NSFW',
     endpoints: [
@@ -31,15 +40,6 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/oral' },
       { method: 'GET', path: '/api/ass' },
       { method: 'GET', path: '/api/ero' },
-    ],
-  },
-  {
-    category: 'AI',
-    endpoints: [
-      { method: 'GET', path: '/api/gpt-4?q=' },
-      { method: 'GET', path: '/api/gpt-3?q=' },
-      { method: 'GET', path: '/api/bing?q=' },
-      { method: 'GET', path: '/api/dall-e?q=' },
     ],
   },
 ];

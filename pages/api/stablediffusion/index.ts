@@ -18,12 +18,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
             try {
                 console.log('Data received from stablediffusion.v2:', data);
 
-                // Assuming data contains the image buffer or base64 encoded image
-                const imageBuffer = data.imageBuffer; // Adjust according to your API response
-                const base64Image = imageBuffer ? imageBuffer.toString('base64') : data.base64Image;
+                // Check if data contains the expected image property
+                const imageBuffer = data?.imageBuffer; // Adjust according to your API response
+                const base64Image = imageBuffer ? imageBuffer.toString('base64') : data?.base64Image;
 
                 if (!base64Image) {
-                    throw new Error('No image data found.');
+                    console.error('Error: No image data found.');
+                    res.status(500).json({ error: 'No image data found' });
+                    return;
                 }
 
                 const responseData = {

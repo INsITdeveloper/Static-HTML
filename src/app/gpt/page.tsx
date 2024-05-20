@@ -1,5 +1,7 @@
 "use client";
 import { useState, CSSProperties } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
@@ -25,15 +27,29 @@ const ChatPage = () => {
     }
   };
 
+  const renderMessage = (msg: { user: string; text: string }, index: number) => {
+    const isCode = msg.text.startsWith('```') && msg.text.endsWith('```');
+    const codeContent = isCode ? msg.text.slice(3, -3).trim() : '';
+
+    return (
+      <div key={index} style={styles.message}>
+        <strong>{msg.user}:</strong>
+        {isCode ? (
+          <SyntaxHighlighter language="javascript" style={coy}>
+            {codeContent}
+          </SyntaxHighlighter>
+        ) : (
+          <span>{msg.text}</span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div style={styles.container}>
       <h1>Chat with AI</h1>
       <div style={styles.chatContainer}>
-        {messages.map((msg, index) => (
-          <div key={index} style={styles.message}>
-            <strong>{msg.user}:</strong> {msg.text}
-          </div>
-        ))}
+        {messages.map(renderMessage)}
       </div>
       <div style={styles.inputContainer}>
         <input

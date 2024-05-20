@@ -1,5 +1,4 @@
-"use client"
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow as syntaxTheme } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -9,6 +8,17 @@ const ChatPage: React.FC = () => {
   const [input, setInput] = useState<string>('');
   const [messages, setMessages] = useState<{ text: string, from: 'user' | 'ai' }[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -17,7 +27,7 @@ const ChatPage: React.FC = () => {
     setLoading(true);
     setMessages([...messages, { text: input, from: 'user' }]);
     setInput('');
-    
+
     try {
       const response = await axios.get(`https://sh.zanixon.xyz/api/gpt-4?q=${encodeURIComponent(input)}`);
       const aiResponse = response.data.gpt;
@@ -40,7 +50,7 @@ const ChatPage: React.FC = () => {
     }
   };
 
-  const renderMessage = (message: { text: string, from: 'user' | 'ai' }) => {
+  const renderMessage = (message: { text: string, from: 'user' | 'ai' }, index: number) => {
     const isCode = message.text.includes('```');
 
     if (isCode) {
@@ -49,7 +59,7 @@ const ChatPage: React.FC = () => {
       const codeContent = code.split('\n').slice(1).join('\n');
 
       return (
-        <div style={{ position: 'relative', marginBottom: '1rem', width: '100%' }}>
+        <div key={index} style={{ position: 'relative', marginBottom: '1rem', width: '100%' }}>
           <SyntaxHighlighter language={language} style={syntaxTheme}>
             {codeContent}
           </SyntaxHighlighter>
@@ -60,13 +70,26 @@ const ChatPage: React.FC = () => {
       );
     }
 
-    return <div style={{ marginBottom: '1rem' }}>{message.text}</div>;
+    return (
+      <div key={index} style={{ marginBottom: '1rem' }}>
+        {message.text}
+      </div>
+    );
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.chatBox}>
         <h1 style={styles.header}>Chat with AI</h1>
+        <div style={{ overflowY: 'scroll', maxHeight: '400px' }}>
+          {messages.map((message, index) => (
+            <div key={index} style={styles.messageContainer}>
+              <div style={styles.messageSender}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
+              {renderMessage(message, index)}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
         <form onSubmit={handleSubmit} style={styles.form}>
           <textarea
             value={input}
@@ -79,16 +102,6 @@ const ChatPage: React.FC = () => {
             {loading ? 'Sending...' : 'Send'}
           </button>
         </form>
-        {messages.length > 0 && (
-          <div>
-            {messages.map((message, index) => (
-              <div key={index} style={styles.messageContainer}>
-                <div style={styles.messageSender}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
-                {renderMessage(message)}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -103,23 +116,26 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   chatBox: {
     width: '100%',
-    maxWidth: '160px', // Adjust the maximum width here
+    maxWidth: '500px',
+    border: '1px solid #ccc',
+    borderRadius: '8px',
+    padding: '1rem',
   },
   header: {
     fontSize: '1.5rem',
     marginBottom: '1.25rem',
+    textAlign: 'center',
   },
   form: {
-    marginBottom: '1.25rem',
+    marginTop: '1rem',
   },
   input: {
-    width: '200%',
+    width: '100%',
     padding: '0.625rem',
     boxSizing: 'border-box',
-    fontSize: '1.17rem', // Ukuran teks diperbesar sebesar 170% dari ukuran default (1rem)
-    resize: 'none', // Disable textarea resizing
-    minHeight: '3rem', // Set a minimum height to textarea
-    wordWrap: 'break-word', // Untuk memastikan teks input dapat memanjang dan dibungkus
+    fontSize: '1rem',
+    resize: 'none',
+    minHeight: '3rem',
   },
   button: {
     marginTop: '0.625rem',
@@ -131,8 +147,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'flex-start',
     marginBottom: '1.25rem',
-    wordWrap: 'break-word', // Memastikan teks jawaban AI dapat memanjang dan dibungkus
-   },
+    wordWrap: 'break-word',
+  },
   messageSender: {
     fontWeight: 'bold',
     marginRight: '0.625rem',

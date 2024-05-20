@@ -33,6 +33,12 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/ero' },
     ],
   },
+  {
+    category: 'AI',
+    endpoints: [
+      { method: 'GET', path: '/api/gpt-4?q=' },
+    ],
+  },
 ];
 
 const Page = () => {

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
@@ -9,17 +10,17 @@ const apiEndpoints = [
       {
         method: 'GET',
         path: '/api/waifu',
-        status: 'active'
+        description: 'Example response:\n{ "waifuName": "Linucx Chan>3", "anime": "I\'m Not Ready To Do It UwU" }',
       },
       {
         method: 'GET',
         path: '/api/maid',
-        status: 'active'
+        description: 'Example response:\n{ "url": "https://cdn.waifu.im/7347.jpg" }',
       },
       {
         method: 'GET',
         path: '/api/oppai',
-        status: 'active'
+        description: 'Example response:\n{ "oppaiSize": "XL", "anime": "Big Oppai" }',
       },
     ],
   },
@@ -28,22 +29,21 @@ const apiEndpoints = [
     endpoints: [
       {
         method: 'GET',
-        path: '/api/otakudown?id=1',
-        status: 'active'
+        path: '/api/otakudown?=id',
+        description: 'Example response:\n{ "link": "https://otakudesu.cloud/batch/knkgdddn01nk-batch-sub-indo/" }',
       },
       {
         method: 'GET',
         path: '/api/otakusearch?q=id',
-        status: 'active'
+        description: 'Example response:\n{ "searchResults": [ { "title": "Naruto", "link": "https://otakudesu.cloud/anime/naruto", "imageUrl": "https://otakudesu.cloud/wp-content/uploads/2024/04/Naruto.jpg", "altText": "Naruto Sub Indo", "genres": ["Action", "Adventure"], "status": "Completed", "rating": "8.5" } ] }',
       },
     ],
   },
 ];
 
 const Page = () => {
+  const [description, setDescription] = useState('');
   const [serverData, setServerData] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleNavigate = (endpoint) => {
     window.location.href = endpoint;
@@ -76,108 +76,81 @@ const Page = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => {
-      setIsDarkMode(e.matches);
-    };
-    
-    setIsDarkMode(darkModeMediaQuery.matches);
-    darkModeMediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      darkModeMediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
-
   return (
     <>
       <Analytics />
-      <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif', backgroundColor: isDarkMode ? '#121212' : '#ffffff', color: isDarkMode ? '#ffffff' : '#000000' }}>
-        <aside style={{ width: '250px', padding: '20px', borderRight: `1px solid ${isDarkMode ? '#333' : '#ccc'}`, backgroundColor: isDarkMode ? '#1e1e1e' : '#f9f9f9' }}>
-          <h2>Categories</h2>
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            {apiEndpoints.map((category, index) => (
-              <li key={index} style={{ marginBottom: '10px' }}>
-                <button
-                  onClick={() => setSelectedCategory(selectedCategory === index ? null : index)}
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    textAlign: 'left', 
-                    cursor: 'pointer', 
-                    fontWeight: selectedCategory === index ? 'bold' : 'normal',
-                    color: isDarkMode ? '#ffffff' : '#000000'
-                  }}
-                >
-                  {category.category}
-                </button>
-                {selectedCategory === index && (
-                  <ul style={{ listStyleType: 'none', padding: '10px 0 0 20px' }}>
-                    {category.endpoints.map((endpoint, epIndex) => (
-                      <li key={epIndex} style={{ marginBottom: '5px' }}>
-                        <div>
-                          <span style={{ marginRight: '10px' }}>{endpoint.status}</span>
-                          <button
-                            onClick={() => handleNavigate(endpoint.path)}
-                            style={{ 
-                              background: 'none', 
-                              border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
-                              color: isDarkMode ? '#90caf9' : 'blue', 
-                              borderRadius: '4px', 
-                              cursor: 'pointer', 
-                              padding: '5px 10px' 
-                            }}
-                          >
-                            {endpoint.method} {endpoint.path}
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </aside>
-        <div style={{ padding: '20px', flexGrow: 1 }}>
-          <h2>Docs ID NSTAPI</h2>
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h2>Docs ID NSTAPI</h2>
+        <section>
+          <p>Haloo Semua! Saya Memperkenalkan API Free Dari NeastooID,
+            Project Ini Sebenarnya Sudah Tertinggal Sejak 2022 Dan Baru Di Lanjut Skrg,
+            Project Ini Hanya Iseng Dan Gabut, Hanya Untuk Pembelajaran Saja,
+            Namun Jika Kalian Ingin Memakai Nya Silahkan Dan Yap Yang Paling Penting Ini Free!,
+            Namun Jika Kalian Berkenan Berdonasi Boleh Banget Kok!</p>
+        </section>
+        {apiEndpoints.length === 0 ? (
           <section>
-            <p>Haloo Semua! Saya Memperkenalkan API Free Dari NeastooID,
-              Project Ini Sebenarnya Sudah Tertinggal Sejak 2022 Dan Baru Di Lanjut Skrg,
-              Project Ini Hanya Iseng Dan Gabut, Hanya Untuk Pembelajaran Saja,
-              Namun Jika Kalian Ingin Memakai Nya Silahkan Dan Yap Yang Paling Penting Ini Free!,
-              Namun Jika Kalian Berkenan Berdonasi Boleh Banget Kok!</p>
+            <p>No API endpoints configured.</p>
           </section>
-          <div id="disqus_thread"></div>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function() { 
-                  var d = document, s = d.createElement('script');
-                  s.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
-                  s.setAttribute('data-timestamp', +new Date());
-                  (d.head || d.body).appendChild(s);
-                })();
-              `,
-            }}
-          />
-          <section>
-            <h2>Console</h2>
-            <div>
-              {serverData ? (
-                <pre>
-                  <code>{JSON.stringify(serverData, null, 2)}</code>
-                </pre>
-              ) : (
-                <p>Loading server data...</p>
-              )}
-            </div>
-          </section>
-          <footer style={{ marginTop: '20px', borderTop: `1px solid ${isDarkMode ? '#444' : '#ccc'}`, paddingTop: '10px' }}>
-            <p>&copy; {new Date().getFullYear()} Created by Yusupkakuu</p>
-          </footer>
-        </div>
+        ) : (
+          apiEndpoints.map((category, catIndex) => (
+            <section key={catIndex}>
+              <h2>{category.category} Endpoints</h2>
+              {category.endpoints.map((endpoint, index) => (
+                <div key={index} style={{ marginBottom: '20px' }}>
+                  <h3>
+                    {endpoint.method === 'GET' || endpoint.method === 'POST' ? (
+                      <>
+                        {endpoint.method} {endpoint.path}
+                        <button
+                          onClick={() => handleNavigate(endpoint.path)}
+                          style={{ marginLeft: '10px', background: 'none', border: '1px solid blue', color: 'blue', borderRadius: '4px', cursor: 'pointer', padding: '5px 10px' }}
+                        >
+                          Use
+                        </button>
+                      </>
+                    ) : (
+                      `${endpoint.method} ${endpoint.path}`
+                    )}
+                  </h3>
+                  <div style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
+                    <pre>
+                      <code>{endpoint.description}</code>
+                    </pre>
+                  </div>
+                </div>
+              ))}
+            </section>
+          ))
+        )}
+        <div id="disqus_thread"></div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() { 
+                var d = document, s = d.createElement('script');
+                s.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+              })();
+            `,
+          }}
+        />
+        <section>
+          <h2>Console</h2>
+          <div>
+            {serverData ? (
+              <pre>
+                <code>{JSON.stringify(serverData, null, 2)}</code>
+              </pre>
+            ) : (
+              <p>Loading server data...</p>
+            )}
+          </div>
+        </section>
+        <footer style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
+          <p>&copy; {new Date().getFullYear()} Created by Yusupkakuu</p>
+        </footer>
       </div>
     </>
   );

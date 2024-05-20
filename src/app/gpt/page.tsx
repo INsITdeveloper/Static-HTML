@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, CSSProperties } from 'react';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
@@ -50,7 +50,7 @@ const ChatPage = () => {
   );
 };
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     padding: '20px',
     fontFamily: 'Arial, sans-serif',

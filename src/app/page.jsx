@@ -23,6 +23,24 @@ const apiEndpoints = [
     ],
   },
     {
+    category: 'Downloader',
+    endpoints: [
+      { method: 'GET', path: '/api/gpt-4?q=' },
+      { method: 'GET', path: '/api/gpt-3?q=' },
+      { method: 'GET', path: '/api/bing?q=' },
+      { method: 'GET', path: '/api/dall-e?q=' },
+    ],
+  },
+    {
+    category: 'Uploader',
+    endpoints: [
+      { method: 'GET', path: '/api/gpt-4?q=' },
+      { method: 'GET', path: '/api/gpt-3?q=' },
+      { method: 'GET', path: '/api/bing?q=' },
+      { method: 'GET', path: '/api/dall-e?q=' },
+    ],
+  },
+    {
     category: 'AI',
     endpoints: [
       { method: 'GET', path: '/api/gpt-4?q=' },

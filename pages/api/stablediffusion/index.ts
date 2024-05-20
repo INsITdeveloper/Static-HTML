@@ -3,7 +3,7 @@ const { stablediffusion } = require("gpti");
 const fs = require('fs');
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-    const prompt = req.query.q as string || "buatkan saya gambar sunset";
+    const prompt = req.query.q as string || "anime";
 
     stablediffusion.v2({
         prompt: prompt,

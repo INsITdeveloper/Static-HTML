@@ -34,10 +34,8 @@ const apiEndpoints = [
     {
     category: 'Uploader',
     endpoints: [
-      { method: 'GET', path: '/api/gpt-4?q=' },
-      { method: 'GET', path: '/api/gpt-3?q=' },
-      { method: 'GET', path: '/api/bing?q=' },
-      { method: 'GET', path: '/api/dall-e?q=' },
+      { method: 'GET', path: '/api/telegph?q=' },
+      { method: 'GET', path: '/api/cdn?q=' },
     ],
   },
     {

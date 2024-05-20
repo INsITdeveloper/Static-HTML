@@ -44,6 +44,7 @@ const apiEndpoints = [
 const Page = () => {
   const [description, setDescription] = useState('');
   const [serverData, setServerData] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleNavigate = (endpoint) => {
     window.location.href = endpoint;
@@ -79,78 +80,113 @@ const Page = () => {
   return (
     <>
       <Analytics />
-      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <h2>Docs ID NSTAPI</h2>
-        <section>
-          <p>Haloo Semua! Saya Memperkenalkan API Free Dari NeastooID,
-            Project Ini Sebenarnya Sudah Tertinggal Sejak 2022 Dan Baru Di Lanjut Skrg,
-            Project Ini Hanya Iseng Dan Gabut, Hanya Untuk Pembelajaran Saja,
-            Namun Jika Kalian Ingin Memakai Nya Silahkan Dan Yap Yang Paling Penting Ini Free!,
-            Namun Jika Kalian Berkenan Berdonasi Boleh Banget Kok!</p>
-        </section>
-        {apiEndpoints.length === 0 ? (
-          <section>
-            <p>No API endpoints configured.</p>
-          </section>
-        ) : (
-          apiEndpoints.map((category, catIndex) => (
-            <section key={catIndex}>
-              <h2>{category.category} Endpoints</h2>
-              {category.endpoints.map((endpoint, index) => (
-                <div key={index} style={{ marginBottom: '20px' }}>
-                  <h3>
-                    {endpoint.method === 'GET' || endpoint.method === 'POST' ? (
-                      <>
-                        {endpoint.method} {endpoint.path}
+      <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif' }}>
+        <aside style={{ width: '250px', padding: '20px', borderRight: '1px solid #ccc' }}>
+          <h2>Categories</h2>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
+            {apiEndpoints.map((category, index) => (
+              <li key={index} style={{ marginBottom: '10px' }}>
+                <button
+                  onClick={() => setSelectedCategory(selectedCategory === index ? null : index)}
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    textAlign: 'left', 
+                    cursor: 'pointer', 
+                    fontWeight: selectedCategory === index ? 'bold' : 'normal'
+                  }}
+                >
+                  {category.category}
+                </button>
+                {selectedCategory === index && (
+                  <ul style={{ listStyleType: 'none', padding: '10px 0 0 20px' }}>
+                    {category.endpoints.map((endpoint, epIndex) => (
+                      <li key={epIndex} style={{ marginBottom: '5px' }}>
                         <button
                           onClick={() => handleNavigate(endpoint.path)}
-                          style={{ marginLeft: '10px', background: 'none', border: '1px solid blue', color: 'blue', borderRadius: '4px', cursor: 'pointer', padding: '5px 10px' }}
+                          style={{ 
+                            background: 'none', 
+                            border: '1px solid blue', 
+                            color: 'blue', 
+                            borderRadius: '4px', 
+                            cursor: 'pointer', 
+                            padding: '5px 10px' 
+                          }}
                         >
-                          Use
+                          {endpoint.method} {endpoint.path}
                         </button>
-                      </>
-                    ) : (
-                      `${endpoint.method} ${endpoint.path}`
-                    )}
-                  </h3>
-                  <div style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
-                    <pre>
-                      <code>{endpoint.description}</code>
-                    </pre>
-                  </div>
-                </div>
-              ))}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </aside>
+        <div style={{ padding: '20px', flexGrow: 1 }}>
+          <h2>Docs ID NSTAPI</h2>
+          <section>
+            <p>Haloo Semua! Saya Memperkenalkan API Free Dari NeastooID,
+              Project Ini Sebenarnya Sudah Tertinggal Sejak 2022 Dan Baru Di Lanjut Skrg,
+              Project Ini Hanya Iseng Dan Gabut, Hanya Untuk Pembelajaran Saja,
+              Namun Jika Kalian Ingin Memakai Nya Silahkan Dan Yap Yang Paling Penting Ini Free!,
+              Namun Jika Kalian Berkenan Berdonasi Boleh Banget Kok!</p>
+          </section>
+          {selectedCategory !== null && apiEndpoints[selectedCategory].endpoints.map((endpoint, index) => (
+            <section key={index}>
+              <h3>
+                {endpoint.method} {endpoint.path}
+                <button
+                  onClick={() => handleNavigate(endpoint.path)}
+                  style={{ 
+                    marginLeft: '10px', 
+                    background: 'none', 
+                    border: '1px solid blue', 
+                    color: 'blue', 
+                    borderRadius: '4px', 
+                    cursor: 'pointer', 
+                    padding: '5px 10px' 
+                  }}
+                >
+                  Use
+                </button>
+              </h3>
+              <div style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
+                <pre>
+                  <code>{endpoint.description}</code>
+                </pre>
+              </div>
             </section>
-          ))
-        )}
-        <div id="disqus_thread"></div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() { 
-                var d = document, s = d.createElement('script');
-                s.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-              })();
-            `,
-          }}
-        />
-        <section>
-          <h2>Console</h2>
-          <div>
-            {serverData ? (
-              <pre>
-                <code>{JSON.stringify(serverData, null, 2)}</code>
-              </pre>
-            ) : (
-              <p>Loading server data...</p>
-            )}
-          </div>
-        </section>
-        <footer style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
-          <p>&copy; {new Date().getFullYear()} Created by Yusupkakuu</p>
-        </footer>
+          ))}
+          <div id="disqus_thread"></div>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() { 
+                  var d = document, s = d.createElement('script');
+                  s.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
+                  s.setAttribute('data-timestamp', +new Date());
+                  (d.head || d.body).appendChild(s);
+                })();
+              `,
+            }}
+          />
+          <section>
+            <h2>Console</h2>
+            <div>
+              {serverData ? (
+                <pre>
+                  <code>{JSON.stringify(serverData, null, 2)}</code>
+                </pre>
+              ) : (
+                <p>Loading server data...</p>
+              )}
+            </div>
+          </section>
+          <footer style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '10px' }}>
+            <p>&copy; {new Date().getFullYear()} Created by Yusupkakuu</p>
+          </footer>
+        </div>
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { dalle } from "gpti";
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-    const prompt = req.query.q as string || "starry sky over the city";
+    const prompt = req.query.q as string || "anime";
 
     dalle.v1({
         prompt: prompt

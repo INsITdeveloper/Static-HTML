@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import cheerio from 'cheerio';
 
-export const GET = async (req: NextRequest) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const pages = [1, 2, 3, 4];
   try {
     const requests = pages.map(async (page) => {
@@ -35,8 +35,10 @@ export const GET = async (req: NextRequest) => {
     const results = await Promise.all(requests);
     const mergedList = results.flat(); // Menggabungkan hasil dari semua halaman
 
-    return NextResponse.json({ status: 200, success: true, data: mergedList }, { status: 200 });
+    res.status(200).json({ status: 200, success: true, data: mergedList });
   } catch (error: any) {
-    return NextResponse.json({ msg: error.message }, { status: 500 });
+    res.status(500).json({ msg: error.message });
   }
 };
+
+export default handler;

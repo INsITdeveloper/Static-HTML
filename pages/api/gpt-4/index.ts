@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const { gpt } = require("gpti");
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
+    const prompt = req.query.q as string || "Perkenalkan Dirimu Dengan Nama LinucxAI!";
+
     gpt.v1({
         messages: [
             {
@@ -17,7 +19,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
                 content: "Oke Saya Akan Memakai Bahasa Indonesia, Adakah Yang Bisa Saya Bantu?"
             }
         ],
-        prompt: "Can you repeat my name?",
+        prompt: prompt,
         model: "GPT-4",
         markdown: false
     }, (err: Error | null, data: any) => { // Menggunakan tipe `any` untuk data

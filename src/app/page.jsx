@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
   {
-    category: 'Random Foto',
+    category: 'RANIME',
     endpoints: [
       { method: 'GET', path: '/api/waifu' },
       { method: 'GET', path: '/api/maid' },
@@ -16,14 +16,14 @@ const apiEndpoints = [
     ],
   },
   {
-    category: 'Anime Down',
+    category: 'ANIMEDL',
     endpoints: [
       { method: 'GET', path: '/api/otakudown?id=1' },
       { method: 'GET', path: '/api/otakusearch?q=id' },
     ],
   },
     {
-    category: 'Downloader',
+    category: 'DOWNLDR',
     endpoints: [
       { method: 'GET', path: '/api/tiktok?q=' },
       { method: 'GET', path: '/api/ytmp3?q=' },
@@ -32,7 +32,7 @@ const apiEndpoints = [
     ],
   },
     {
-    category: 'Uploader',
+    category: 'UPLDR',
     endpoints: [
       { method: 'GET', path: '/api/telegph?q=' },
       { method: 'GET', path: '/api/cdn?q=' },

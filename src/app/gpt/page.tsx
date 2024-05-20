@@ -89,17 +89,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '1.25rem',
     display: 'flex',
     justifyContent: 'center',
-    boxSizing: 'border-box', // Tipe 'border-box' telah ditetapkan secara langsung di sini
+    boxSizing: 'border-box',
   },
   chatBox: {
     width: '100%',
     maxWidth: '37.5rem', // 600px
-    '@media (min-width: 640px)': {
-      width: '50%',
-    },
-    '@media (max-width: 639px)': {
-      width: '90%',
-    },
   },
   header: {
     fontSize: '1.5rem',

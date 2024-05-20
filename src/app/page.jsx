@@ -111,14 +111,14 @@ const Page = () => {
               <h2
                 onClick={() => toggleCategory(category.category)}
                 style={{
-          cursor: 'pointer',
-          color: 'white',
-          border: '1px solid gray',
-          padding: '10px 15px', // Adjusted padding to reduce width by 5px
-          borderRadius: '5px',
-          backgroundColor: 'gray',
-          width: 'calc(100% - 5px)'
-        }}
+                  cursor: 'pointer',
+                  color: 'white',
+                  border: '1px solid gray',
+                  padding: '10px 15px', // Adjusted padding to reduce width by 5px
+                  borderRadius: '5px',
+                  backgroundColor: 'gray',
+                  width: 'calc(100% - 5px)'
+                }}
               >
                 {category.category} Endpoints
               </h2>

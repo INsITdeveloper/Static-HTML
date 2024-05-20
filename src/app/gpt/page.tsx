@@ -2,6 +2,7 @@
 import { useState, CSSProperties } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
@@ -35,9 +36,17 @@ const ChatPage = () => {
       <div key={index} style={styles.message}>
         <strong>{msg.user}:</strong>
         {isCode ? (
-          <SyntaxHighlighter language="javascript" style={coy}>
-            {codeContent}
-          </SyntaxHighlighter>
+          <div style={styles.codeContainer}>
+            <div style={styles.codeHeader}>
+              <span>Code</span>
+              <CopyToClipboard text={codeContent}>
+                <button style={styles.copyButton}>Copy</button>
+              </CopyToClipboard>
+            </div>
+            <SyntaxHighlighter language="javascript" style={coy}>
+              {codeContent}
+            </SyntaxHighlighter>
+          </div>
         ) : (
           <span>{msg.text}</span>
         )}
@@ -81,6 +90,29 @@ const styles: { [key: string]: CSSProperties } = {
   message: {
     marginBottom: '10px',
   },
+  codeContainer: {
+    position: 'relative',
+    margin: '10px 0',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    overflow: 'hidden',
+  },
+  codeHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: '5px 10px',
+    borderBottom: '1px solid #ccc',
+  },
+  copyButton: {
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '3px',
+    padding: '5px 10px',
+    cursor: 'pointer',
+  },
   inputContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -96,7 +128,7 @@ const styles: { [key: string]: CSSProperties } = {
     padding: '10px 20px',
     borderRadius: '5px',
     border: 'none',
-    background: '#007bff',
+    backgroundColor: '#007bff',
     color: 'white',
     cursor: 'pointer',
   },

@@ -7,7 +7,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const ChatPage = () => {
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
   const [input, setInput] = useState('');
-  const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
 
   const sendMessage = async () => {
     if (input.trim() === '') return;
@@ -40,7 +39,7 @@ const ChatPage = () => {
           <div style={styles.codeContainer}>
             <div style={styles.codeHeader}>
               <span>Code</span>
-              <CopyToClipboard text={codeContent} onCopy={() => setSelectedMessageIndex(index)}>
+              <CopyToClipboard text={codeContent}>
                 <button style={styles.copyButton}>Copy</button>
               </CopyToClipboard>
             </div>

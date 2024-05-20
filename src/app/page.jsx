@@ -26,6 +26,8 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/ecchi' },
       { method: 'GET', path: '/api/milf' },
       { method: 'GET', path: '/api/oral' },
+      { method: 'GET', path: '/api/ass' },
+      { method: 'GET', path: '/api/ero' },
     ],
   },
 ];

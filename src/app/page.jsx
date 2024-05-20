@@ -49,6 +49,13 @@ const apiEndpoints = [
     ],
   },
   {
+    category: 'PAGES',
+    endpoints: [
+      { method: 'GET', path: '/gpt' },
+      { method: 'GET', path: '/dall-e' },
+    ],
+  },
+  {
     category: 'NSFW',
     endpoints: [
       { method: 'GET', path: '/api/hentai' },

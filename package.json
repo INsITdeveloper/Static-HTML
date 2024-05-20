@@ -28,6 +28,7 @@
     "tailwindcss": "^3.4.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "systeminformation": "^5.22.9"
+    "systeminformation": "^5.22.9",
+    "gpti": "2.1.3"
   }
 }

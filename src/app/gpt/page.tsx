@@ -1,14 +1,24 @@
-'use client'
 import React, { useState } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface MessageProps {
     sender: string;
     text: string;
+    isCode?: boolean;
 }
 
-const Message: React.FC<MessageProps> = ({ sender, text }) => (
-    <div className={`message ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
-        <div className="message-text">{text}</div>
+const Message: React.FC<MessageProps> = ({ sender, text, isCode }) => (
+    <div className="message-container">
+        <div className={`message ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
+            {isCode ? (
+                <SyntaxHighlighter language="javascript" style={dracula}>
+                    {text}
+                </SyntaxHighlighter>
+            ) : (
+                <div className="message-text">{text}</div>
+            )}
+        </div>
     </div>
 );
 
@@ -46,8 +56,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
                 onChange={(e) => setInput(e.target.value)} 
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Type your message..."
+                style={{ width: '80%', marginRight: '10px' }} // Inline CSS
             />
-            <button onClick={handleSend}>Send</button>
+            <button 
+                onClick={handleSend} 
+                style={{ padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }} // Inline CSS
+            >
+                Send
+            </button>
         </div>
     );
 };
@@ -64,7 +80,12 @@ const Chat: React.FC = () => {
         <div className="chat">
             <div className="chat-body">
                 {messages.map((msg, index) => (
-                    <Message key={index} sender={msg.sender} text={msg.text} />
+                    <Message 
+                        key={index} 
+                        sender={msg.sender} 
+                        text={msg.text} 
+                        isCode={msg.isCode} 
+                    />
                 ))}
             </div>
             <ChatInput onSend={sendMessage} />

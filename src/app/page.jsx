@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
@@ -10,17 +9,17 @@ const apiEndpoints = [
       {
         method: 'GET',
         path: '/api/waifu',
-        description: 'Example response:\n{ "waifuName": "Linucx Chan>3", "anime": "I\'m Not Ready To Do It UwU" }',
+        status: 'active'
       },
       {
         method: 'GET',
         path: '/api/maid',
-        description: 'Example response:\n{ "url": "https://cdn.waifu.im/7347.jpg" }',
+        status: 'active'
       },
       {
         method: 'GET',
         path: '/api/oppai',
-        description: 'Example response:\n{ "oppaiSize": "XL", "anime": "Big Oppai" }',
+        status: 'active'
       },
     ],
   },
@@ -29,20 +28,19 @@ const apiEndpoints = [
     endpoints: [
       {
         method: 'GET',
-        path: '/api/otakudown?=id',
-        description: 'Example response:\n{ "link": "https://otakudesu.cloud/batch/knkgdddn01nk-batch-sub-indo/" }',
+        path: '/api/otakudown?id=1',
+        status: 'active'
       },
       {
         method: 'GET',
         path: '/api/otakusearch?q=id',
-        description: 'Example response:\n{ "searchResults": [ { "title": "Naruto", "link": "https://otakudesu.cloud/anime/naruto", "imageUrl": "https://otakudesu.cloud/wp-content/uploads/2024/04/Naruto.jpg", "altText": "Naruto Sub Indo", "genres": ["Action", "Adventure"], "status": "Completed", "rating": "8.5" } ] }',
+        status: 'active'
       },
     ],
   },
 ];
 
 const Page = () => {
-  const [description, setDescription] = useState('');
   const [serverData, setServerData] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -118,19 +116,22 @@ const Page = () => {
                   <ul style={{ listStyleType: 'none', padding: '10px 0 0 20px' }}>
                     {category.endpoints.map((endpoint, epIndex) => (
                       <li key={epIndex} style={{ marginBottom: '5px' }}>
-                        <button
-                          onClick={() => handleNavigate(endpoint.path)}
-                          style={{ 
-                            background: 'none', 
-                            border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
-                            color: isDarkMode ? '#90caf9' : 'blue', 
-                            borderRadius: '4px', 
-                            cursor: 'pointer', 
-                            padding: '5px 10px' 
-                          }}
-                        >
-                          {endpoint.method} {endpoint.path}
-                        </button>
+                        <div>
+                          <span style={{ marginRight: '10px' }}>{endpoint.status}</span>
+                          <button
+                            onClick={() => handleNavigate(endpoint.path)}
+                            style={{ 
+                              background: 'none', 
+                              border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
+                              color: isDarkMode ? '#90caf9' : 'blue', 
+                              borderRadius: '4px', 
+                              cursor: 'pointer', 
+                              padding: '5px 10px' 
+                            }}
+                          >
+                            {endpoint.method} {endpoint.path}
+                          </button>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -148,32 +149,6 @@ const Page = () => {
               Namun Jika Kalian Ingin Memakai Nya Silahkan Dan Yap Yang Paling Penting Ini Free!,
               Namun Jika Kalian Berkenan Berdonasi Boleh Banget Kok!</p>
           </section>
-          {selectedCategory !== null && apiEndpoints[selectedCategory].endpoints.map((endpoint, index) => (
-            <section key={index}>
-              <h3>
-                {endpoint.method} {endpoint.path}
-                <button
-                  onClick={() => handleNavigate(endpoint.path)}
-                  style={{ 
-                    marginLeft: '10px', 
-                    background: 'none', 
-                    border: `1px solid ${isDarkMode ? '#90caf9' : 'blue'}`, 
-                    color: isDarkMode ? '#90caf9' : 'blue', 
-                    borderRadius: '4px', 
-                    cursor: 'pointer', 
-                    padding: '5px 10px' 
-                  }}
-                >
-                  Use
-                </button>
-              </h3>
-              <div style={{ backgroundColor: isDarkMode ? '#333' : '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
-                <pre>
-                  <code>{endpoint.description}</code>
-                </pre>
-              </div>
-            </section>
-          ))}
           <div id="disqus_thread"></div>
           <script
             dangerouslySetInnerHTML={{

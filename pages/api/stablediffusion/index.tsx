@@ -1,3 +1,4 @@
+// pages/api/stablediffusion.tsx
 import { NextApiRequest, NextApiResponse } from 'next';
 import { stablediffusion } from 'gpti';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,7 @@ const StablediffusionPage = () => {
                 const data = await generateImage(prompt);
                 const preparedData = await prepareResponse(data, prompt);
                 setResponseData(preparedData);
-            } catch (error) {
+            } catch (error: any) { // Explicitly define the type of error
                 setError(error);
             }
         };

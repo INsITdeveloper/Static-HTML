@@ -39,7 +39,7 @@ const ChatPage: React.FC = () => {
       const codeContent = code.split('\n').slice(1).join('\n');
 
       return (
-        <div style={{ position: 'relative', marginBottom: '20px' }}>
+        <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
           <SyntaxHighlighter language={language} style={syntaxTheme}>
             {codeContent}
           </SyntaxHighlighter>
@@ -54,27 +54,29 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Chat with AI</h1>
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-        />
-        <button type="submit" style={{ marginTop: '10px', padding: '10px', width: '100%' }} disabled={loading}>
-          {loading ? 'Sending...' : 'Send'}
-        </button>
-      </form>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '20px' }}>
-            <div style={{ fontWeight: 'bold', marginRight: '10px' }}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
-            {renderMessage(message)}
-          </div>
-        ))}
+    <div style={{ padding: '20px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '50%', maxWidth: '600px' }}>
+        <h1>Chat with AI</h1>
+        <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
+          />
+          <button type="submit" style={{ marginTop: '10px', padding: '10px', width: '100%' }} disabled={loading}>
+            {loading ? 'Sending...' : 'Send'}
+          </button>
+        </form>
+        <div>
+          {messages.map((message, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div style={{ fontWeight: 'bold', marginRight: '10px' }}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
+              {renderMessage(message)}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

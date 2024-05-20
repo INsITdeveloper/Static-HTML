@@ -1,5 +1,5 @@
-// ChatGPTClone.tsx
 import React, { useState } from 'react';
+import styles from './stylesmodule.css'; // Import CSS module
 
 interface MessageProps {
     sender: string;
@@ -39,7 +39,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     };
 
     return (
-        <div className="chat-input">
+        <div className={styles['chat-input']}> {/* Use CSS module class */}
             <input 
                 type="text" 
                 value={input} 
@@ -61,8 +61,8 @@ const Chat: React.FC = () => {
     };
 
     return (
-        <div className="chat">
-            <div className="chat-body">
+        <div className={styles.chat}> {/* Use CSS module class */}
+            <div className={styles['chat-body']}> {/* Use CSS module class */}
                 {messages.map((msg, index) => (
                     <Message key={index} sender={msg.sender} text={msg.text} />
                 ))}
@@ -74,7 +74,7 @@ const Chat: React.FC = () => {
 
 const ChatGPTClone: React.FC = () => {
     return (
-        <div className="App">
+        <div className={styles.App}> {/* Use CSS module class */}
             <Chat />
         </div>
     );

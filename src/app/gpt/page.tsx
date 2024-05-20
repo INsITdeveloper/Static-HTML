@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import './styles.css'; // Import CSS file for styling
 
 interface MessageProps {
     sender: string;
@@ -10,16 +11,14 @@ interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ sender, text, isCode }) => (
-    <div className="message-container">
-        <div className={`message ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
-            {isCode ? (
-                <SyntaxHighlighter language="javascript" style={dracula}>
-                    {text}
-                </SyntaxHighlighter>
-            ) : (
-                <div className="message-text">{text}</div>
-            )}
-        </div>
+    <div className={`message-container ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>
+        {isCode ? (
+            <SyntaxHighlighter language="javascript" style={dracula}>
+                {text}
+            </SyntaxHighlighter>
+        ) : (
+            <div className={`message-text ${sender === 'ChatGPT' ? 'bot' : 'user'}`}>{text}</div>
+        )}
     </div>
 );
 
@@ -57,14 +56,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
                 onChange={(e) => setInput(e.target.value)} 
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Type your message..."
-                style={{ width: '80%', marginRight: '10px' }} // Inline CSS
             />
-            <button 
-                onClick={handleSend} 
-                style={{ padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }} // Inline CSS
-            >
-                Send
-            </button>
+            <button onClick={handleSend}>Send</button>
         </div>
     );
 };

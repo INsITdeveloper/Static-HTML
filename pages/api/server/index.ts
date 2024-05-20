@@ -75,7 +75,7 @@ const getServerTime = () => {
 // Fungsi untuk mendapatkan total visitor dari API eksternal
 const getTotalVisitors = async () => {
   try {
-    const response = await axios.get('https://sh.zanixon.xyz/api/visitors');
+    const response = await axios.get('https://sh.zanixon.xyz/');
     return response.data.totalVisitors; // Asumsi respons memiliki properti totalVisitors
   } catch (error) {
     console.error('Error fetching total visitors:', error);

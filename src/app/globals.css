@@ -9,8 +9,6 @@ body, h1, h2, h3, p, pre, code {
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
   line-height: 1.6;
   padding: 20px;
 }
@@ -37,7 +35,6 @@ p {
 }
 
 pre {
-  background-color: #eaeaea;
   padding: 10px;
   border-radius: 5px;
   overflow-x: auto;
@@ -46,7 +43,6 @@ pre {
 
 code {
   font-family: 'Courier New', Courier, monospace;
-  background-color: #f0f0f0;
   padding: 2px 4px;
   border-radius: 3px;
 }
@@ -55,7 +51,6 @@ code {
 div {
   max-width: 800px;
   margin: 0 auto;
-  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -72,15 +67,10 @@ div > div {
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
-  background-color: #f9f9f9;
 }
 
 div > div h3 {
   color: #007bff;
-}
-
-div > div pre {
-  background-color: #f5f5f5;
 }
 
 div > div h4 {
@@ -95,4 +85,60 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Light mode styles */
+body {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+pre {
+  background-color: #eaeaea;
+}
+
+code {
+  background-color: #f0f0f0;
+}
+
+div {
+  background-color: #fff;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  pre {
+    background-color: #333;
+  }
+
+  code {
+    background-color: #444;
+  }
+
+  div {
+    background-color: #1e1e1e;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  div > div {
+    border: 1px solid #555;
+    background-color: #2c2c2c;
+  }
+
+  div > div h3 {
+    color: #66b2ff;
+  }
+
+  a {
+    color: #66b2ff;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }

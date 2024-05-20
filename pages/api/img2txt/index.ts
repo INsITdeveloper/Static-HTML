@@ -19,7 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const html = response.data;
 
     const $ = cheerio.load(html);
-    const bodyContent = $('body').html();
+
+    // Remove all script tags from the body content
+    $('script').remove();
+
+    // Extract and clean the body content
+    const bodyContent = $('body').text().trim();
 
     if (bodyContent) {
       return res.status(200).json({ bodyContent });

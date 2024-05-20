@@ -13,6 +13,8 @@
 - 👤 Created By NeastooID
 - 💌 Since 19 Jan 2022
 - 👨‍💻 Still under development
+- 📓 Suport Vercel
+- 📘 Easy to understand for beginners
 
 ------
 

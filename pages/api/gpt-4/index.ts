@@ -10,11 +10,11 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
             },
             {
                 role: "user",
-                content: "Hello, my name is Yandri."
+                content: "Hello, Bisakah Kamu Memakai Bahasa Indonesia?."
             },
             {
                 role: "assistant",
-                content: "Hello, Yandri! How are you today?"
+                content: "Oke Saya Akan Memakai Bahasa Indonesia, Adakah Yang Bisa Saya Bantu?"
             }
         ],
         prompt: "Can you repeat my name?",

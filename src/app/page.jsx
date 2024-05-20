@@ -7,61 +7,60 @@ const apiEndpoints = [
   {
     category: 'RandAnine',
     endpoints: [
-      {
-        method: 'GET',
-        path: '/api/waifu',
-        description: 'Example response:\n{ "waifuName": "Linucx Chan>3", "anime": "I\'m Not Ready To Do It UwU" }',
-      },
-      {
-        method: 'GET',
-        path: '/api/maid',
-        description: 'Example response:\n{ "url": "https://cdn.waifu.im/7347.jpg" }',
-      },
-      {
-        method: 'GET',
-        path: '/api/oppai',
-        description: 'Example response:\n{ "oppaiSize": "XL", "anime": "Big Oppai" }',
-      },
+      { method: 'GET', path: '/api/waifu' },
+      { method: 'GET', path: '/api/maid' },
+      { method: 'GET', path: '/api/oppai' },
     ],
   },
   {
     category: 'AninDown',
     endpoints: [
-      {
-        method: 'GET',
-        path: '/api/otakudown?=id',
-        description: 'Example response:\n{ "link": "https://otakudesu.cloud/batch/knkgdddn01nk-batch-sub-indo/" }',
-      },
-      {
-        method: 'GET',
-        path: '/api/otakusearch?q=id',
-        description: 'Example response:\n{ "searchResults": [ { "title": "Naruto", "link": "https://otakudesu.cloud/anime/naruto", "imageUrl": "https://otakudesu.cloud/wp-content/uploads/2024/04/Naruto.jpg", "altText": "Naruto Sub Indo", "genres": ["Action", "Adventure"], "status": "Completed", "rating": "8.5" } ] }',
-      },
+      { method: 'GET', path: '/api/otakudown?id=1' },
+      { method: 'GET', path: '/api/otakusearch?q=id' },
     ],
   },
 ];
 
 const Page = () => {
-  const [description, setDescription] = useState('');
-  const [serverData, setServerData] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [endpointStatus, setEndpointStatus] = useState({});
 
   const handleNavigate = (endpoint) => {
     window.location.href = endpoint;
   };
 
+  const toggleCategory = (category) => {
+    setActiveCategory(activeCategory === category ? null : category);
+  };
+
+  const checkEndpointStatus = async (endpoint) => {
+    try {
+      const response = await fetch(endpoint);
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  };
+
   useEffect(() => {
-    const fetchServerData = async () => {
-      try {
-        const response = await fetch('https://sh.zanixon.xyz/api/server');
-        const data = await response.json();
-        setServerData(data);
-      } catch (error) {
-        console.error('Error fetching server data:', error);
-      }
+    const fetchStatus = async () => {
+      const statusPromises = apiEndpoints.flatMap((category) =>
+        category.endpoints.map(async (endpoint) => {
+          const status = await checkEndpointStatus(endpoint.path);
+          return { path: endpoint.path, status };
+        })
+      );
+
+      const statusResults = await Promise.all(statusPromises);
+      const statusMap = statusResults.reduce((acc, { path, status }) => {
+        acc[path] = status;
+        return acc;
+      }, {});
+
+      setEndpointStatus(statusMap);
     };
 
-    fetchServerData();
-    const interval = setInterval(fetchServerData, 1000); // Update every second
+    fetchStatus();
 
     const script = document.createElement('script');
     script.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
@@ -71,7 +70,6 @@ const Page = () => {
     document.head.appendChild(script);
 
     return () => {
-      clearInterval(interval); // Clear the interval when component unmounts
       document.head.removeChild(script);
     };
   }, []);
@@ -95,31 +93,46 @@ const Page = () => {
         ) : (
           apiEndpoints.map((category, catIndex) => (
             <section key={catIndex}>
-              <h2>{category.category} Endpoints</h2>
-              {category.endpoints.map((endpoint, index) => (
-                <div key={index} style={{ marginBottom: '20px' }}>
-                  <h3>
-                    {endpoint.method === 'GET' || endpoint.method === 'POST' ? (
-                      <>
-                        {endpoint.method} {endpoint.path}
-                        <button
-                          onClick={() => handleNavigate(endpoint.path)}
-                          style={{ marginLeft: '10px', background: 'none', border: '1px solid blue', color: 'blue', borderRadius: '4px', cursor: 'pointer', padding: '5px 10px' }}
-                        >
-                          Use
-                        </button>
-                      </>
-                    ) : (
-                      `${endpoint.method} ${endpoint.path}`
-                    )}
-                  </h3>
-                  <div style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}>
-                    <pre>
-                      <code>{endpoint.description}</code>
-                    </pre>
-                  </div>
+              <h2 onClick={() => toggleCategory(category.category)} style={{ cursor: 'pointer', color: 'blue' }}>
+                {category.category} Endpoints
+              </h2>
+              {activeCategory === category.category && (
+                <div style={{ marginTop: '10px', transition: 'max-height 0.5s ease-in-out' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+                    <thead>
+                      <tr>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Nama Endpoint</th>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Status</th>
+                        <th style={{ border: '1px solid #ccc', padding: '8px', textAlign: 'left' }}>Test</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {category.endpoints.map((endpoint, index) => (
+                        <tr key={index}>
+                          <td style={{ border: '1px solid #ccc', padding: '8px' }}>{endpoint.path}</td>
+                          <td
+                            style={{
+                              border: '1px solid #ccc',
+                              padding: '8px',
+                              color: endpointStatus[endpoint.path] ? 'green' : 'red',
+                            }}
+                          >
+                            {endpointStatus[endpoint.path] ? '200 Success' : '404 Error'}
+                          </td>
+                          <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                            <button
+                              onClick={() => handleNavigate(endpoint.path)}
+                              style={{ background: 'none', border: '1px solid blue', color: 'blue', borderRadius: '4px', cursor: 'pointer', padding: '5px 10px' }}
+                            >
+                              Get
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-              ))}
+              )}
             </section>
           ))
         )}

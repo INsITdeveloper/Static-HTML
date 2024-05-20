@@ -25,10 +25,10 @@ const apiEndpoints = [
     {
     category: 'Downloader',
     endpoints: [
-      { method: 'GET', path: '/api/gpt-4?q=' },
-      { method: 'GET', path: '/api/gpt-3?q=' },
-      { method: 'GET', path: '/api/bing?q=' },
-      { method: 'GET', path: '/api/dall-e?q=' },
+      { method: 'GET', path: '/api/tiktok?q=' },
+      { method: 'GET', path: '/api/ytmp3?q=' },
+      { method: 'GET', path: '/api/ytmp4?q=' },
+      { method: 'GET', path: '/api/igdl?q=' },
     ],
   },
     {

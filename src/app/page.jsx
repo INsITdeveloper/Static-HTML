@@ -24,6 +24,7 @@ const apiEndpoints = [
 const Page = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [endpointStatus, setEndpointStatus] = useState({});
+  const [serverData, setServerData] = useState(null);
 
   const handleNavigate = (endpoint) => {
     window.location.href = endpoint;
@@ -62,6 +63,19 @@ const Page = () => {
 
     fetchStatus();
 
+    const fetchServerData = async () => {
+      try {
+        const response = await fetch('https://sh.zanixon.xyz/api/server');
+        const data = await response.json();
+        setServerData(data);
+      } catch (error) {
+        console.error('Error fetching server data:', error);
+      }
+    };
+
+    fetchServerData();
+    const interval = setInterval(fetchServerData, 1000); // Update every second
+
     const script = document.createElement('script');
     script.src = 'https://https-sh-zanixon-xyz.disqus.com/embed.js';
     script.setAttribute('data-timestamp', String(new Date()));
@@ -70,6 +84,7 @@ const Page = () => {
     document.head.appendChild(script);
 
     return () => {
+      clearInterval(interval); // Clear the interval when component unmounts
       document.head.removeChild(script);
     };
   }, []);

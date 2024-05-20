@@ -37,6 +37,7 @@ const apiEndpoints = [
     category: 'AI',
     endpoints: [
       { method: 'GET', path: '/api/gpt-4?q=' },
+      { method: 'GET', path: '/api/gpt-3?q=' },
       { method: 'GET', path: '/api/bing?q=' },
       { method: 'GET', path: '/api/dall-e?q=' },
     ],

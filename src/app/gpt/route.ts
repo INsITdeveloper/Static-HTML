@@ -1,4 +1,3 @@
-"use client"
 import React, { useState } from 'react';
 
 interface MessageProps {
@@ -68,73 +67,6 @@ const Chat: React.FC = () => {
                 ))}
             </div>
             <ChatInput onSend={sendMessage} />
-            <style jsx>{`
-                .chat {
-                    max-width: 500px;
-                    margin: 20px auto;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    font-family: 'Roboto', sans-serif;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Menambahkan shadow */
-                }
-
-                .chat-body {
-                    padding: 10px;
-                    overflow-y: auto;
-                    max-height: 300px;
-                }
-
-                .message {
-                    margin-bottom: 10px;
-                    padding: 10px;
-                    border-radius: 5px;
-                    max-width: 70%;
-                    word-wrap: break-word; /* Menambahkan pemisahan kata */
-                }
-
-                .message.bot {
-                    background-color: #f0f0f0;
-                    align-self: flex-start;
-                }
-
-                .message.user {
-                    background-color: #d3eaff;
-                    align-self: flex-end;
-                }
-
-                .message-text {
-                    word-wrap: break-word;
-                }
-
-                .chat-input {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px;
-                    border-top: 1px solid #ccc;
-                    border-bottom-left-radius: 5px;
-                    border-bottom-right-radius: 5px;
-                }
-
-                .chat-input input {
-                    flex-grow: 1;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    margin-right: 10px;
-                    font-size: 0.9rem;
-                    background-color: #f8f9fa; /* Warna latar belakang */
-                }
-
-                .chat-input button {
-                    padding: 8px 15px;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: #4285f4;
-                    color: white;
-                    cursor: pointer;
-                    font-size: 0.9rem;
-                }
-            `}</style>
         </div>
     );
 };

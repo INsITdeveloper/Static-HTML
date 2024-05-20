@@ -1,4 +1,4 @@
-"use client";
+// src/app/gpt/page.tsx
 import { useState, CSSProperties } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -57,9 +57,11 @@ const ChatPage = () => {
   return (
     <div style={styles.container}>
       <h1>Chat with AI</h1>
-      <div style={styles.chatContainer}>
-        {messages.map(renderMessage)}
-      </div>
+      {messages.length > 0 && (
+        <div style={styles.chatContainer}>
+          {messages.map(renderMessage)}
+        </div>
+      )}
       <div style={styles.inputContainer}>
         <input
           type="text"

@@ -19,6 +19,12 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/otakusearch?q=id' },
     ],
   },
+  {
+    category: 'NSFW',
+    endpoints: [
+      { method: 'GET', path: '/api/hentai' },
+    ],
+  },
 ];
 
 const Page = () => {

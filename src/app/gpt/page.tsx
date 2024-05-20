@@ -113,10 +113,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: '1.25rem',
   },
   input: {
-    width: '100%',
+    width: '200%',
     padding: '0.625rem',
     boxSizing: 'border-box',
-    fontSize: '1rem',
+    fontSize: '1.17rem', // Ukuran teks diperbesar sebesar 170% dari ukuran default (1rem)
     resize: 'none', // Disable textarea resizing
     minHeight: '3rem', // Set a minimum height to textarea
     wordWrap: 'break-word', // Untuk memastikan teks input dapat memanjang dan dibungkus
@@ -132,7 +132,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'flex-start',
     marginBottom: '1.25rem',
     wordWrap: 'break-word', // Memastikan teks jawaban AI dapat memanjang dan dibungkus
-  },
+   },
   messageSender: {
     fontWeight: 'bold',
     marginRight: '0.625rem',

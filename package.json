@@ -14,7 +14,7 @@
     "next": "14.2.3"
   },
   "devDependencies": {
-    "react-syntax-highlighter": "*",
+    "@types/react-syntax-highlighter": "*",
     "@vercel/analytics": "*",
     "typescript": "^5",
     "@types/express": "*",

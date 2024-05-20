@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 const { stablediffusion } = require("gpti");
-const fs = require('fs');
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-    const prompt = req.query.q as string || "anime";
+    const prompt = req.query.q as string || "buatkan saya gambar anime";
 
     stablediffusion.v2({
         prompt: prompt,
@@ -17,9 +16,8 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
             res.status(500).json({ error: 'Internal Server Error' });
         } else {
             try {
-                // Assuming data contains the path to the generated image
-                const imagePath = data.imagePath; // Adjust according to your API response
-                const imageBuffer = fs.readFileSync(imagePath);
+                // Assuming data contains the image buffer
+                const imageBuffer = data.imageBuffer; // Adjust according to your API response
                 const base64Image = imageBuffer.toString('base64');
 
                 const responseData = {

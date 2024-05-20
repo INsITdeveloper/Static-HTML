@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import si from 'systeminformation';
+import axios from 'axios';
 
 // Fungsi untuk mendapatkan informasi penggunaan CPU
 const getCpuUsage = async () => {
@@ -23,21 +24,21 @@ const getRamUsage = async () => {
   }
 };
 
-// Fungsi untuk mendapatkan informasi jaringan
-const getNetworkStats = async () => {
+// Fungsi untuk mendapatkan kecepatan jaringan
+const getNetworkSpeed = async () => {
   try {
     const networkData = await si.networkStats();
     if (networkData.length > 0) {
-      const totalRxBytes = networkData.reduce((acc, iface) => acc + iface.rx_bytes, 0);
-      const totalTxBytes = networkData.reduce((acc, iface) => acc + iface.tx_bytes, 0);
+      const totalRxSec = networkData.reduce((acc, iface) => acc + iface.rx_sec, 0);
+      const totalTxSec = networkData.reduce((acc, iface) => acc + iface.tx_sec, 0);
       return {
-        totalDownload: (totalRxBytes / (1024 * 1024)).toFixed(2), // Konversi ke MB
-        totalUpload: (totalTxBytes / (1024 * 1024)).toFixed(2), // Konversi ke MB
+        totalDownloadSpeed: (totalRxSec / 1024).toFixed(2), // Konversi ke KBps
+        totalUploadSpeed: (totalTxSec / 1024).toFixed(2), // Konversi ke KBps
       };
     }
     return null;
   } catch (error) {
-    console.error('Error fetching network stats:', error);
+    console.error('Error fetching network speed:', error);
     return null;
   }
 };
@@ -71,15 +72,27 @@ const getServerTime = () => {
   return now;
 };
 
+// Fungsi untuk mendapatkan total visitor dari API eksternal
+const getTotalVisitors = async () => {
+  try {
+    const response = await axios.get('https://sh.zanixon.xyz/api/visitors');
+    return response.data.totalVisitors; // Asumsi respons memiliki properti totalVisitors
+  } catch (error) {
+    console.error('Error fetching total visitors:', error);
+    return null;
+  }
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Mendapatkan informasi dari berbagai sumber
-    const [cpuUsage, ramUsage, networkStats, osName, serverTime] = await Promise.all([
+    const [cpuUsage, ramUsage, networkSpeed, osName, serverTime, totalVisitors] = await Promise.all([
       getCpuUsage(),
       getRamUsage(),
-      getNetworkStats(),
+      getNetworkSpeed(),
       getOsName(),
       getServerTime(),
+      getTotalVisitors(),
     ]);
 
     // Menyusun data respons
@@ -88,10 +101,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       osName,
       ramUsage: `${ramUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
       cpuUsage: `${cpuUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
-      networkStats: {
-        totalDownload: `${networkStats?.totalDownload} MB`,
-        totalUpload: `${networkStats?.totalUpload} MB`,
+      networkSpeed: {
+        totalDownloadSpeed: `${networkSpeed?.totalDownloadSpeed} KBps`,
+        totalUploadSpeed: `${networkSpeed?.totalUploadSpeed} KBps`,
       },
+      totalVisitors,
     };
 
     // Mengirim respons dengan data yang dikumpulkan

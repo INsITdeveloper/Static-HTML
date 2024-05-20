@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const { stablediffusion } = require("gpti");
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
-    const prompt = req.query.q as string || "buatkan saya gambar anime";
+    const prompt = req.query.q as string || "buatkan saya gambar sunset";
 
     stablediffusion.v2({
         prompt: prompt,
@@ -12,13 +12,19 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         }
     }, async (err: Error | null, data: any) => {
         if (err) {
-            console.error(err);
+            console.error('Error from stablediffusion.v2:', err);
             res.status(500).json({ error: 'Internal Server Error' });
         } else {
             try {
-                // Assuming data contains the image buffer
+                console.log('Data received from stablediffusion.v2:', data);
+
+                // Assuming data contains the image buffer or base64 encoded image
                 const imageBuffer = data.imageBuffer; // Adjust according to your API response
-                const base64Image = imageBuffer.toString('base64');
+                const base64Image = imageBuffer ? imageBuffer.toString('base64') : data.base64Image;
+
+                if (!base64Image) {
+                    throw new Error('No image data found.');
+                }
 
                 const responseData = {
                     code: 200,

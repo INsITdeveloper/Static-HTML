@@ -116,7 +116,8 @@ const Page = () => {
                   border: '1px solid gray',
                   padding: '10px',
                   borderRadius: '5px',
-                  backgroundColor: 'blue'
+                  backgroundColor: 'gray',
+                  width: 'calc(100% - 5px)'
                 }}
               >
                 {category.category} Endpoints

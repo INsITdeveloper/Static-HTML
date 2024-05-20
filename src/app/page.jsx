@@ -20,6 +20,7 @@ const apiEndpoints = [
     endpoints: [
       { method: 'GET', path: '/api/otakudown?id=1' },
       { method: 'GET', path: '/api/otakusearch?q=id' },
+      { method: 'GET', path: '/api/newanime' },
     ],
   },
     {

@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 const apiEndpoints = [
   {
-    category: 'RandAnine',
+    category: 'Random Foto',
     endpoints: [
       { method: 'GET', path: '/api/waifu' },
       { method: 'GET', path: '/api/maid' },
@@ -16,7 +16,7 @@ const apiEndpoints = [
     ],
   },
   {
-    category: 'AninDown',
+    category: 'Anime Down',
     endpoints: [
       { method: 'GET', path: '/api/otakudown?id=1' },
       { method: 'GET', path: '/api/otakusearch?q=id' },

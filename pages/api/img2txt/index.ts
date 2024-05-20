@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
+import cheerio from 'cheerio';
 
 type Data = {
-  description?: string;
+  bodyContent?: string;
   error?: string;
 };
 
@@ -14,16 +15,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    const apiUrl = `https://www.api.vyturex.com/describe?url=${encodeURIComponent(url)}`;
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(url);
+    const html = response.data;
 
-    if (response.data && response.data.description) {
-      return res.status(200).json({ description: response.data.description });
+    const $ = cheerio.load(html);
+    const bodyContent = $('body').html();
+
+    if (bodyContent) {
+      return res.status(200).json({ bodyContent });
     } else {
-      return res.status(500).json({ error: 'Failed to fetch description' });
+      return res.status(500).json({ error: 'Failed to fetch body content' });
     }
   } catch (error) {
-    console.error('Error fetching description:', error);
+    console.error('Error fetching body content:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

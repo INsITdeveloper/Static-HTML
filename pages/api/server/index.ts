@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import si from 'systeminformation'; // Modul untuk memperoleh informasi sistem
+import si from 'systeminformation';
 
 // Fungsi untuk mendapatkan informasi penggunaan CPU
 const getCpuUsage = async () => {
@@ -35,13 +35,37 @@ const getServerTime = () => {
   return now;
 };
 
+// Fungsi untuk mendapatkan informasi sistem operasi
+const getOperatingSystem = async () => {
+  try {
+    const osData = await si.osInfo();
+    return `${osData.distro} ${osData.release}`;
+  } catch (error) {
+    console.error('Error fetching OS info:', error);
+    return null;
+  }
+};
+
+// Fungsi untuk mendapatkan ping jaringan
+const getNetworkPing = async () => {
+  try {
+    const pingData = await si.inetLatency();
+    return pingData;
+  } catch (error) {
+    console.error('Error fetching network ping:', error);
+    return null;
+  }
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Mendapatkan informasi dari berbagai sumber
-    const [cpuUsage, ramUsage, serverTime] = await Promise.all([
+    const [cpuUsage, ramUsage, serverTime, operatingSystem, networkPing] = await Promise.all([
       getCpuUsage(),
       getRamUsage(),
       getServerTime(),
+      getOperatingSystem(),
+      getNetworkPing(),
     ]);
 
     // Menyusun data respons
@@ -49,6 +73,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       serverTime,
       ramUsage: `${ramUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
       cpuUsage: `${cpuUsage?.toFixed(2)}%`, // Konversi ke persentase dengan 2 desimal
+      operatingSystem,
+      networkPing: `${networkPing} ms`
     };
 
     // Mengirim respons dengan data yang dikumpulkan

@@ -108,7 +108,17 @@ const Page = () => {
         ) : (
           apiEndpoints.map((category, catIndex) => (
             <section key={catIndex}>
-              <h2 onClick={() => toggleCategory(category.category)} style={{ cursor: 'pointer', color: 'blue' }}>
+              <h2
+                onClick={() => toggleCategory(category.category)}
+                style={{
+                  cursor: 'pointer',
+                  color: 'white',
+                  border: '1px solid gray',
+                  padding: '10px',
+                  borderRadius: '5px',
+                  backgroundColor: 'blue'
+                }}
+              >
                 {category.category} Endpoints
               </h2>
               {activeCategory === category.category && (

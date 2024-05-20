@@ -10,6 +10,9 @@ const apiEndpoints = [
       { method: 'GET', path: '/api/waifu' },
       { method: 'GET', path: '/api/maid' },
       { method: 'GET', path: '/api/oppai' },
+      { method: 'GET', path: '/api/marin-kitagawa' },
+      { method: 'GET', path: '/api/mori-calliope' },
+      { method: 'GET', path: '/api/raiden-shogun' },
     ],
   },
   {

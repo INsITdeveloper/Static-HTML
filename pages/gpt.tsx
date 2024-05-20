@@ -19,10 +19,23 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     const [input, setInput] = useState('');
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (input.trim()) {
-            onSend(input);
+            const message = input.trim();
+            onSend(message);
             setInput('');
+
+            // Panggil API
+            try {
+                const response = await fetch(`https://sh.zanixon.xyz/api/gpt-4?q=${encodeURIComponent(message)}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                const data = await response.json();
+                onSend(data.gpt);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
     };
 
@@ -46,10 +59,6 @@ const Chat: React.FC = () => {
     const sendMessage = async (message: string) => {
         const newMessages = [...messages, { sender: 'User', text: message }];
         setMessages(newMessages);
-
-        // Simulasi panggilan ke API
-        const response = "Balasan dari AI";  // Ganti dengan panggilan API sesungguhnya
-        setMessages([...newMessages, { sender: 'ChatGPT', text: response }]);
     };
 
     return (
@@ -64,83 +73,7 @@ const Chat: React.FC = () => {
                 ))}
             </div>
             <ChatInput onSend={sendMessage} />
-            <style jsx>{`
-                .chat {
-                    max-width: 500px;
-                    margin: 0 auto;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    overflow: hidden;
-                    font-family: Arial, sans-serif;
-                }
-
-                .chat-header {
-                    background-color: #4285f4;
-                    color: white;
-                    padding: 10px;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .logo {
-                    width: 30px;
-                    height: 30px;
-                    margin-right: 10px;
-                }
-
-                .title {
-                    font-size: 1.2rem;
-                    font-weight: bold;
-                }
-
-                .chat-body {
-                    padding: 10px;
-                    overflow-y: auto;
-                    max-height: 300px;
-                }
-
-                .message {
-                    margin-bottom: 10px;
-                }
-
-                .message-sender {
-                    font-weight: bold;
-                    margin-bottom: 5px;
-                }
-
-                .message.ChatGPT {
-                    text-align: right;
-                    background-color: #f0f0f0;
-                    border-radius: 10px;
-                    padding: 10px;
-                }
-
-                .chat-input {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px;
-                    background-color: #f0f0f0;
-                }
-
-                .chat-input input {
-                    flex-grow: 1;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    margin-right: 10px;
-                    font-size: 0.9rem;
-                }
-
-                .chat-input button {
-                    padding: 8px 15px;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: #4285f4;
-                    color: white;
-                    cursor: pointer;
-                    font-size: 0.9rem;
-                }
-            `}</style>
+            <style jsx>{/* Your styles here */}</style>
         </div>
     );
 };

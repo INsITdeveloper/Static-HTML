@@ -69,25 +69,27 @@ const ChatPage: React.FC = () => {
             {loading ? 'Sending...' : 'Send'}
           </button>
         </form>
-        <div>
-          {messages.map((message, index) => (
-            <div key={index} style={styles.messageContainer}>
-              <div style={styles.messageSender}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
-              {renderMessage(message)}
-            </div>
-          ))}
-        </div>
+        {messages.length > 0 && (
+          <div>
+            {messages.map((message, index) => (
+              <div key={index} style={styles.messageContainer}>
+                <div style={styles.messageSender}>{message.from === 'user' ? 'You:' : 'AI:'}</div>
+                {renderMessage(message)}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-const styles = {
+const styles: { [key: string]: React.CSSProperties } = {
   container: {
     padding: '1.25rem',
     display: 'flex',
     justifyContent: 'center',
-    boxSizing: 'border-box',
+    boxSizing: 'border-box', // Tipe 'border-box' telah ditetapkan secara langsung di sini
   },
   chatBox: {
     width: '100%',

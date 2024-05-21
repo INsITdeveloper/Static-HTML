@@ -33,6 +33,6 @@
     "react-copy-to-clipboard": "*",
     "react-syntax-highlighter": "*",
     "dotenv": "*",
-    "bing-images": "^1.0.0"
+    "bimg": "*"
   }
 }

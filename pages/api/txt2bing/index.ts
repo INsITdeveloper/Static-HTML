@@ -1,17 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BingImageClient } from 'bing-images';
-
-const client = new BingImageClient({
-    token: process.env.cookie,
-    notify: false
-});
+import { generateImagesLinks } from 'bimg';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { query } = req.query;
+    const { q } = req.query;
     try {
-        const result = await client.getImages(query as string);
-        res.json(result);
+        if (!q || typeof q !== 'string') {
+            throw new Error('Query parameter "q" is missing or invalid.');
+        }
+        const imageLinks = await generateImagesLinks(q);
+        res.json(imageLinks);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };

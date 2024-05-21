@@ -31,6 +31,8 @@
     "systeminformation": "^5.22.9",
     "gpti": "2.1.3",
     "react-copy-to-clipboard": "*",
-    "react-syntax-highlighter": "*"
+    "react-syntax-highlighter": "*",
+    "dotenv": "*",
+    "bing-images": "^dotenv"
   }
 }

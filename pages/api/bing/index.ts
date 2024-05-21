@@ -8,15 +8,11 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
         messages: [
             {
                 role: "assistant",
-                content: "Hello! How are you today?"
+                content: "Hai! Ada Yang Bisa Saya Bantu?"
             },
             {
                 role: "user",
-                content: "Hello, Bisakah Kamu Memakai Bahasa Indonesia?."
-            },
-            {
-                role: "assistant",
-                content: "Oke Saya Akan Memakai Bahasa Indonesia, Adakah Yang Bisa Saya Bantu?"
+                content: prompt
             }
         ],
         conversation_style: "Balanced",

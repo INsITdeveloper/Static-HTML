@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const Photo = () => {
@@ -18,10 +18,8 @@ const Photo = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <button type="submit">Search</button>
-      </form>
+      <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <button type="submit" onClick={handleSubmit}>Create</button>
       <div>
         {photoData.map((photo, index) => (
           <img key={index} src={`data:image/jpeg;base64,${photo}`} alt={`Photo ${index + 1}`} />
